@@ -43,7 +43,7 @@ VALIDATE $? "Enabled mysql server"
 systemctl start mysqld &>> $LOG_FILE
 VALIDATE $? "Started mysql server"
 
-mysql -h mysql.khaleja.fun -u root pExpenseApp@1 -e 'show databases;' &>> $LOG_FILE
+mysql -h mysql.khaleja.fun -u root  -pExpenseApp@1 -e 'show databases;' &>> $LOG_FILE
 
 if [ $? -ne 0 ]
 then
