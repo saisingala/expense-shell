@@ -32,10 +32,10 @@ VALIDATE(){
 
 CHECK_ROOT
 
-dnf module disable nodejs -y | tee -a $LOG_FILE
+dnf module disable nodejs -y &>> LOG_FILE
 VALIDATE $? "Disabling Node JS old version"
 
-dnf module enable nodejs:20 -y | tee -a $LOG_FILE
+dnf module enable nodejs:20 -y &>> LOG_FILE
 VALIDATE $? "Enable Node JS latest version"
 
 dnf install nodejs -y &>> LOG_FILE
