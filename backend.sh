@@ -3,7 +3,7 @@
 LOGS_FOLDER=/var/log/expense
 SCRIPT_NAME=$(echo $0|cut -d "." -f1)
 TIMESTAMP=$(date +%d-%m-%Y-%H-%M-%S)
-LOG_FILE="$LOGS_FOLDER/$SCRIPT_NMAE-$TIMESTAMP.log"
+LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME-$TIMESTAMP.log"
 mkdir -p $LOGS_FOLDER
 
 R="\e[31m"
@@ -44,11 +44,11 @@ VALIDATE $? "Install Noda js"
 id expense  &>> LOG_FILE
   if [ $? -ne 0 ]
   then
-      echo -e "$R Expense user is not created, $G now creating it $N" | tee -a $LOG_FILE
+      echo -e "$R Expense user is not exists, $G now creating it $N" | tee -a $LOG_FILE
       useradd expense &>> LOG_FILE
       VALIDATE $? "Creating expense user"
     else 
-       echo -e "$Y Expense user already present $N" | tee -a $LOG_FILE
+       echo -e "$Y Expense user already exists..$G Skipping $N" | tee -a $LOG_FILE
     fi     
 
 
@@ -56,21 +56,21 @@ mkdir -p /app
 VALIDATE $? "Creating /app directory"
 
 curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip &>> LOG_FILE
-VALIDATE $? "Download application code into app directory"
+VALIDATE $? "Downloading backend application code"
 
 cd /app &>> LOG_FILE
 
-rm -rf /app/* #remove previous files
+rm -rf /app/* #remove existing code
 unzip /tmp/backend.zip &>> LOG_FILE
-VALIDATE $? "Unzip the downloaded code"
+VALIDATE $? "Extracting backend application code"
 
 npm install &>> LOG_FILE
 cp /home/ec2-user/expense-shell/backend.service /etc/systemd/system/backend.service
 
-#load the database before backend servicess
+#load the data before running backend 
 
 dnf install mysql -y &>> LOG_FILE
-VALIDATE $? "Install mysql client"
+VALIDATE $? "Installing mysql client"
 
 mysql -h mysql.khaleja.fun -uroot -pExpenseApp@1 < /app/schema/backend.sql &>> LOG_FILE
 VALIDATE $? "Connect to Database"
