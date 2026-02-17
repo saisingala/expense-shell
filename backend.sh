@@ -11,10 +11,10 @@ G="\e[32m"
 N="\e[0m"
 Y="\e[33m"
 
-USER_ID=$(id -u)
+USERID=$(id -u)
 
 CHECK_ROOT(){
-    if [ USER_ID -ne 0 ]
+    if [ USERID -ne 0 ]
     then
         echo "User not having root privilages"
         exit 1
