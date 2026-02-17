@@ -10,13 +10,14 @@ R="\e[31m"
 G="\e[32m"
 N="\e[0m"
 
-USER_ID=$(id -u)
+USERID=$(id -u)
 
 CHECK_ROOT(){
-    if [ USER_ID -ne 0 ]
+    if [ $USER_ID -ne 0 ]
     then
         echo "User not having root privilages"
         exit 1
+     fi   
 }
 
 VALIDATE(){
@@ -25,7 +26,7 @@ VALIDATE(){
          echo -e "$2 is $R FAILED $N" | tee -a $LOG_FILE
      else 
          echo -e "$2 is $G SUCCESS $N" | tee -a $LOG_FILE   
-         
+      fi   
 }
 
 CHECK_ROOT
