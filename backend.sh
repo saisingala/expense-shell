@@ -70,7 +70,7 @@ cp /home/ec2-user/expense-shell/backend.service /etc/nginx/default.d/expense.con
 #load the database before backend servicess
 
 dnf install mysql -y &>> LOG_FILE
-VAILDATE $? "Install mysql"
+VALIDATE $? "Install mysql client"
 
 mysql -h backend.khaleja.fun -uroot -pExpenseApp@1 < /app/schema/backend.sql &>> LOG_FILE
 VALIDATE $? "Connect to Database"
