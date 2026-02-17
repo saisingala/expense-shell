@@ -65,7 +65,7 @@ unzip /tmp/backend.zip &>> LOG_FILE
 VALIDATE $? "Unzip the downloaded code"
 
 npm install &>> LOG_FILE
-cp /home/ec2-user/expense-shell/backend.service.sh /etc/nginx/default.d/expense.conf
+cp /home/ec2-user/expense-shell/backend.service /etc/systemd/system/backend.service
 
 #load the database before backend servicess
 
