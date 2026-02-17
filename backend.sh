@@ -59,29 +59,27 @@ curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expen
 VALIDATE $? "Download application code into app directory"
 
 cd /app &>> LOG_FILE
-VALIDATE $? "Chang to /app Directory"
 
-rm -rf /app/*
+rm -rf /app/* #remove previous files
 unzip /tmp/backend.zip &>> LOG_FILE
 VALIDATE $? "Unzip the downloaded code"
 
-# npm install &>> LOG_FILE
-# VALIDATE $? "Install npm"
+npm install &>> LOG_FILE
+cp /home/ec2-user/expense-shell/backend.service /etc/nginx/default.d/expense.conf
 
-# systemctl daemon-reload &>> LOG_FILE
-# VALIDATE $? "Load the service"
+#load the database before backend servicess
 
-# systemctl start backend &>> LOG_FILE
-# VALIDATE $? "Start the service"
+dnf install mysql -y &>> LOG_FILE
+VAILDATE $? "Install mysql"
 
-# systemctl enable backend &>> LOG_FILE
-# VALIDATE $? "Enable the service"
+mysql -h backend.khaleja.fun -uroot -pExpenseApp@1 < /app/schema/backend.sql &>> LOG_FILE
+VALIDATE $? "Connect to Database"
 
-# dnf install mysql -y &>> LOG_FILE
-# VAILDATE $? "Install mysql"
+systemctl daemon-reload &>> LOG_FILE
+VALIDATE $? "Load the service"
 
-# mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -pExpenseApp@1 < /app/schema/backend.sql &>> LOG_FILE
-# VALIDATE $? "Connect to Database"
+systemctl enable backend &>> LOG_FILE
+VALIDATE $? "Enable the service"
 
-# systemctl restart backend &>> LOG_FILE
-# VALIDATE $? "Restart the service"
+systemctl restart backend &>> LOG_FILE
+VALIDATE $? "Restart the service"
