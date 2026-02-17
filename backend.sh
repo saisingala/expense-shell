@@ -1,9 +1,9 @@
 #!bin/bash
 
-LOGS_FOLDER=(/var/log/expense)
+LOGS_FOLDER=/var/log/expense
 SCRIPT_NAME=$(echo $0|cut -d "." -f1)
 TIMESTAMP=$(date +%d-%m-%Y-%H-%M-%S)
-LOG_FILE=($LOGS_FOLDER/$SCRIPT_NMAE-$TIMESTAMP.log)
+LOG_FILE="$LOGS_FOLDER/$SCRIPT_NMAE-$TIMESTAMP.log"
 mkdir -p $LOGS_FOLDER
 
 R="\e[31m"
