@@ -1,0 +1,17 @@
+#!bin/bash
+
+vim /etc/systemd/system/backend.service
+
+
+[Unit]
+Description = Backend Service
+
+[Service]
+User=expense
+Environment=DB_HOST="backend.khaleja.fun"
+ExecStart=/bin/node /app/index.js
+SyslogIdentifier=backend
+
+[Install]
+WantedBy=multi-user.target
+
