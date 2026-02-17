@@ -14,7 +14,7 @@ Y="\e[33m"
 USERID=$(id -u)
 
 CHECK_ROOT(){
-    if [ USERID -ne 0 ]
+    if [ $USERID -ne 0 ]
     then
         echo "User not having root privilages"
         exit 1
@@ -61,6 +61,7 @@ VALIDATE $? "Download application code into app directory"
 cd /app &>> LOG_FILE
 VALIDATE $? "Chang to /app Directory"
 
+rm -rf /app/*
 unzip /tmp/backend.zip &>> LOG_FILE
 VALIDATE $? "Unzip the downloaded code"
 
