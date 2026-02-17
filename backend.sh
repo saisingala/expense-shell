@@ -41,8 +41,16 @@ VALIDATE $? "Enable Node JS latest version"
 dnf install nodejs -y &>> LOG_FILE
 VALIDATE $? "Install Noda js"
 
-useradd expense &>> LOG_FILE
-VALIDATE $? "Adding application user"
+id expense 
+  if [ $? -ne 0 ]
+  then
+      echo -e "$R Expense user is not created, $G now creating it $N" | tee -a $LOG_FILE
+      useradd expense &>> LOG_FILE
+      exit 1
+    else 
+       echo -e "$Y Expense user already present $N" | tee -a $LOG_FILE
+    fi     
+
 
 mkdir -p /app
 VALIDATE $? "Creating /app directory"
@@ -50,29 +58,29 @@ VALIDATE $? "Creating /app directory"
 curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip &>> LOG_FILE
 VALIDATE $? "Download application code into app directory"
 
-cd /app &>> LOG_FILE
-VALIDATE $? "Chang to /app Directory"
+# cd /app &>> LOG_FILE
+# VALIDATE $? "Chang to /app Directory"
 
-unzip /tmp/backend.zip &>> LOG_FILE
-VALIDATE $? "Unzip the downloaded code"
+# unzip /tmp/backend.zip &>> LOG_FILE
+# VALIDATE $? "Unzip the downloaded code"
 
-npm install &>> LOG_FILE
-VALIDATE $? "Install npm"
+# npm install &>> LOG_FILE
+# VALIDATE $? "Install npm"
 
-systemctl daemon-reload &>> LOG_FILE
-VALIDATE $? "Load the service"
+# systemctl daemon-reload &>> LOG_FILE
+# VALIDATE $? "Load the service"
 
-systemctl start backend 
-VALIDATE $? "Start the service"
+# systemctl start backend &>> LOG_FILE
+# VALIDATE $? "Start the service"
 
-systemctl enable backend
-VALIDATE $? "Enable the service"
+# systemctl enable backend &>> LOG_FILE
+# VALIDATE $? "Enable the service"
 
-dnf install mysql -y &>> LOG_FILE
-VAILDATE $? "Install mysql"
+# dnf install mysql -y &>> LOG_FILE
+# VAILDATE $? "Install mysql"
 
-mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -pExpenseApp@1 < /app/schema/backend.sql &>> LOG_FILE
-VALIDATE $? "Connect to Database"
+# mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -pExpenseApp@1 < /app/schema/backend.sql &>> LOG_FILE
+# VALIDATE $? "Connect to Database"
 
-systemctl restart backend
-VALIDATE $? "Restart the service"
+# systemctl restart backend &>> LOG_FILE
+# VALIDATE $? "Restart the service"
