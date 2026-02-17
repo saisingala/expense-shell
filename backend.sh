@@ -41,12 +41,12 @@ VALIDATE $? "Enable Node JS latest version"
 dnf install nodejs -y &>> LOG_FILE
 VALIDATE $? "Install Noda js"
 
-id expense 
+id expense  &>> LOG_FILE
   if [ $? -ne 0 ]
   then
       echo -e "$R Expense user is not created, $G now creating it $N" | tee -a $LOG_FILE
       useradd expense &>> LOG_FILE
-      exit 1
+      VALIDATE $? "Creating expense user"
     else 
        echo -e "$Y Expense user already present $N" | tee -a $LOG_FILE
     fi     
@@ -58,11 +58,11 @@ VALIDATE $? "Creating /app directory"
 curl -o /tmp/backend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-backend-v2.zip &>> LOG_FILE
 VALIDATE $? "Download application code into app directory"
 
-# cd /app &>> LOG_FILE
-# VALIDATE $? "Chang to /app Directory"
+cd /app &>> LOG_FILE
+VALIDATE $? "Chang to /app Directory"
 
-# unzip /tmp/backend.zip &>> LOG_FILE
-# VALIDATE $? "Unzip the downloaded code"
+unzip /tmp/backend.zip &>> LOG_FILE
+VALIDATE $? "Unzip the downloaded code"
 
 # npm install &>> LOG_FILE
 # VALIDATE $? "Install npm"
