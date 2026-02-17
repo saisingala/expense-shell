@@ -1,6 +1,6 @@
 #!bin/bash
 
-LOGS_FOLDER=var/log/expense
+LOGS_FOLDER=/var/log/expense
 SCRIPT_NAME=$(echo $0|cut -d "." -f1)
 TIMESTAMP=$(date +%d-%m-%Y-%H-%M-%S)
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME-$TIMESTAMP.log"
@@ -13,7 +13,7 @@ N="\e[0m"
 USERID=$(id -u)
 
 CHECK_ROOT(){
-    if [ $USER_ID -ne 0 ]
+    if [ $USERID -ne 0 ]
     then
         echo "User not having root privilages"
         exit 1
@@ -47,7 +47,7 @@ curl -o /tmp/frontend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expe
 VALIDATE $? "Download frontend Code"
 
 cd /usr/share/nginx/html
-unzip /tmp/frontend.zip &>> $LOG_FILE
+unzip /tmp/frontend.zip &>>$LOG_FILE
 VALIDATE $? "Extract frontend code"
 
 systemctl restart nginx 
