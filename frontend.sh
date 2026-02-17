@@ -30,26 +30,24 @@ VALIDATE(){
 
 CHECK_ROOT
 
-dnf install nginx -y 
+dnf install nginx -y  &>> $LOG_FILE
 VALIDATE $? "Install nginx"
 
-systemctl enable nginx
+systemctl enable nginx &>> $LOG_FILE
 VALIDATE $? "Enable nginx"
 
-systemctl start nginx
+systemctl start nginx &>> $LOG_FILE
 VALIDATE $? "Start nginx"
 
-rm -rf /usr/share/nginx/html/*
-VALIDATE $? "Remove dafault content"
+rm -rf /usr/share/nginx/html/* &>> $LOG_FILE
+VALIDATE $? "Removing dafault website"
 
-curl -o /tmp/frontend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip
-VALIDATE $? "Download frontend content"
+curl -o /tmp/frontend.zip https://expense-builds.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip &>> $LOG_FILE
+VALIDATE $? "Download frontend Code"
 
 cd /usr/share/nginx/html
-VALIDATE $? "Extract frontend content"
+unzip /tmp/frontend.zip &>> $LOG_FILE
+VALIDATE $? "Extract frontend code"
 
-unzip /tmp/frontend.zip
-VALIDATE $? "Unzip the the content"
-
-systemctl restart nginx
+systemctl restart nginx &>> $LOG_FILE
 VALIDATE $? "Restart nginx"
