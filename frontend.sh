@@ -51,3 +51,4 @@ unzip /tmp/frontend.zip &>>$LOG_FILE
 VALIDATE $? "Extract frontend code"
 
 systemctl restart nginx 
+VALIDATE $? "Restarting nginx" &>>$LOG_FILE
